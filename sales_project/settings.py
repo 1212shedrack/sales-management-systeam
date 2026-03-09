@@ -5,9 +5,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = "replace-with-your-secret-key"
 
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['192.168.100.94', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     "django.contrib.humanize",
