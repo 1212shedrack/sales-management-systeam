@@ -1,0 +1,74 @@
+{% extends "sales_app/base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2 class="mb-3">Sale Record</h2>
+
+  <form method="post" id="saleForm">
+    {% csrf_token %}
+    {{ formset.management_form }}
+
+    <table class="table table-bordered" id="saleTable">
+      <thead class="table-light">
+        <tr>
+          <th>Product</th>
+          <th>Quantity</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for form in formset %}
+          <tr class="sale-item">
+            <td>{{ form.product }}</td>
+            <td>{{ form.quantity }}</td>
+            <td><button type="button" class="btn btn-danger btn-sm remove-row">Remove</button></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <button type="button" id="addRow" class="btn btn-success mb-3">Add Sales</button>
+    <br>
+    <button type="submit" class="btn btn-primary">Record</button>
+  </form>
+</div>
+
+<script>
+// --- JavaScript to handle adding/removing rows dynamically ---
+document.addEventListener("DOMContentLoaded", function() {
+    const addRowBtn = document.getElementById("addRow");
+    const saleTable = document.getElementById("saleTable").getElementsByTagName("tbody")[0];
+    const totalForms = document.querySelector("#id_form-TOTAL_FORMS");
+
+    addRowBtn.addEventListener("click", function() {
+        const currentCount = parseInt(totalForms.value);
+        const newRow = saleTable.querySelector(".sale-item").cloneNode(true);
+
+        // Replace the index in name/id attributes
+        newRow.innerHTML = newRow.innerHTML.replaceAll(
+            `form-0-`,
+            `form-${currentCount}-`
+        );
+
+        // Reset quantity input
+        const quantityInput = newRow.querySelector('input[type="number"]');
+        if (quantityInput) quantityInput.value = "";
+
+        // Add new row
+        saleTable.appendChild(newRow);
+        totalForms.value = currentCount + 1;
+    });
+
+    // Remove row
+    saleTable.addEventListener("click", function(e) {
+        if (e.target.classList.contains("remove-row")) {
+            const row = e.target.closest("tr");
+            row.remove();
+
+            // Update form count
+            const rows = saleTable.querySelectorAll(".sale-item");
+            totalForms.value = rows.length;
+        }
+    });
+});
+</script>
+{% endblock %}

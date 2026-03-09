@@ -1,0 +1,21 @@
+{% extends 'sales_app/base.html' %}
+{% block title %}View Product{% endblock %}
+{% block content %}
+<div class="container mt-4">
+  <div class="card shadow-sm">
+    <div class="card-header bg-info text-white">
+      <h4 class="mb-0">Product Details</h4>
+    </div>
+    <div class="card-body">
+      <p><strong>Name:</strong> {{ product.name }}</p>
+      <p><strong>Category:</strong> {{ product.category }}</p>
+      <p><strong>Price:</strong> {{ product.price }}</p>
+      <p><strong>Stock:</strong> {{ product.quantity }}</p>
+      <p><strong>Date Added:</strong> {{ product.date_added|date:"Y-m-d" }}</p>
+      <a href="{% url 'sales_app:edit_product' product.id %}" class="btn btn-warning btn-sm">✏️ Edit</a>
+      <a href="{% url 'sales_app:delete_product' product.id %}" class="btn btn-danger btn-sm">🗑️ Delete</a>
+      <a href="{% url 'sales_app:dashboard' %}" class="btn btn-secondary btn-sm">⬅️ Back</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

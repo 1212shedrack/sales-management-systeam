@@ -1,0 +1,169 @@
+{% load humanize custom_filters %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Invoice - Sale {{ sale.id }}</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #fff;
+      color: #000;
+    }
+
+    .invoice-box {
+      max-width: 800px;
+      margin: auto;
+      padding: 30px;
+      border: 1px solid #eee;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .shop-title {
+      text-align: center;
+      font-size: 26px;
+      font-weight: bold;
+      font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+      margin-bottom: 5px;
+    }
+
+    .shop-subtitle {
+      text-align: center;
+      font-size: 14px;
+      color: gray;
+      margin-bottom: 20px;
+    }
+
+    .details p {
+      margin: 5px 0;
+      font-size: 14px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    th {
+      background-color: #f8f8f8;
+      font-weight: bold;
+    }
+
+    .totals {
+      text-align: right;
+      margin-top: 10px;
+      font-size: 16px;
+    }
+
+    .totals strong {
+      color: green;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 13px;
+      color: gray;
+    }
+
+    .print-btn {
+      display: block;
+      margin: 20px auto;
+      padding: 8px 16px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    @media print {
+      .print-btn { display: none; }
+      body { margin: 0; padding: 0; }
+    }
+  </style>
+</head>
+
+<body>
+  <a href="{% url 'sales_app:dashboard' %}" class="Dashboard">Home</a>
+  <style>
+    .Dashboard{
+      text-decoration: none;
+      text-align: left;
+      color: #000;
+      font-weight: 400;
+      font-size: larger;
+    }
+    .Dashboard:hover{
+     text-decoration-color: #007bff;
+      cursor: pointer;
+      color: rgb(5, 112, 11);
+    }
+  </style>
+  <div class="invoice-box">
+
+    <!-- Shop Info -->
+    <div class="shop-title">SHEDRACK SHOP</div>
+    <div class="shop-subtitle">Quality Products • Best Prices • Reliable Service</div>
+
+    <!-- Sale and Customer Info -->
+    <div class="details">
+      <p><strong>Invoice No:</strong> {{ sale.id }}</p>
+      <p><strong>Date:</strong> {{ sale.date|date:"Y-m-d H:i" }}</p>
+      {% if sale.customer %}
+      <p><strong>Customer:</strong> {{ sale.customer.name }}</p>
+      {% endif %}
+      {% if sale.user %}
+      <p><strong>Cashier:</strong> {{ sale.user.username }}</p>
+      {% endif %}
+    </div>
+
+    <!-- Product Table -->
+    <table>
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Product</th>
+          <th>Quantity</th>
+          <th>Unit Price (Tsh)</th>
+          <th>Subtotal (Tsh)</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in sale.items.all %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ item.product.name }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>{{ item.product.price|floatformat:0|intcomma }}</td>
+          <td>{{ item.subtotal|floatformat:0|intcomma }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <!-- Totals -->
+    <div class="totals">
+      <p><strong>Subtotal:</strong> Tsh {{ sale.total_amount|floatformat:0|intcomma }}</p>
+      <p><strong>Tax (5%):</strong> Tsh {{ sale.total_amount|mul:0.05|floatformat:0|intcomma }}</p>
+       <!-- <p><strong>Grand Total:</strong> Tsh {{ sale.total_amount|add:sale.total_amount|mul:1.05|floatformat:0|intcomma }}</p> -->
+
+    </div>
+
+        <!-- Footer -->
+    <div class="footer">
+      Thank you for shopping with us!<br>
+      <em>Goods once sold are not returnable.</em><br>
+      <strong>Contact:</strong> +255 759122726, +255 612695726 | shedyshop@gmail.com
+    </div>
+  </div>
+</body>
+</html>
