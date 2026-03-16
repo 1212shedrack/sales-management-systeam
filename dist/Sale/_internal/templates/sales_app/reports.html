@@ -1,0 +1,43 @@
+{% extends 'sales_app/base.html' %}
+{% load humanize %}
+{% block title %}Sales Report{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2 class="text-center text-primary fw-bold mb-4"> Sales Report</h2>
+
+  <!-- Summary Cards -->
+  <div class="row text-center mb-4">
+    <div class="col-md-4">
+      <div class="card shadow-sm p-3">
+        <h5>Total Products Sold</h5>
+        <h3 class="text-success">{{ sales_summary.total_products }}</h3>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow-sm p-3">
+        <h5>Total Quantity Sold</h5>
+        <h3 class="text-info">{{ sales_summary.total_quantity_sold|intcomma }}</h3>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow-sm p-3">
+        <h5>Total Sales Value</h5>
+        <h3 class="text-warning">Tsh {{ sales_summary.total_sales_value|floatformat:0|intcomma }}</h3>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart Section -->
+  <div class="card shadow-sm p-4">
+ <!--  <h4 class="text-center text-secondary mb-3">Top 10 Selling Products</h4>-->
+    {% if top_sales_chart %}
+      <div class="chart-container">
+        {{ top_sales_chart|safe }}
+      </div>
+    {% else %}
+      <p class="text-muted text-center">No sales data available for chart.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

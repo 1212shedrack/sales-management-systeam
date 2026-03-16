@@ -1,0 +1,147 @@
+{% extends 'sales_app/base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}Dashboard{% endblock %}
+<!-- {% block page_title %}Dashboard{% endblock %}  -->
+
+{% block content %}
+<div class="container-fluid mt-4">
+
+    <!-- ⚠️ Low Stock Alert -->
+    {% if low_stock_products %}
+    <div class="alert alert-warning shadow-sm">
+        <strong>⚠️ Low Stock Alert!</strong>
+        <ol class="mb-0">
+            {% for product in low_stock_products %}
+            <li>{{ product.name }}     Only {{ product.quantity }} left </li>
+            {% endfor %}
+        </ol>
+    </div>
+    {% else %}
+    <!-- <div class="alert alert-success shadow-sm">
+        ✅ All products are above minimum stock levels.
+    </div> -->
+    {% endif %}
+
+    <!-- Dashboard Title -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-primary">Sales Dashboard</h2>
+    </div>
+
+    <!-- Stats Cards -->
+<div class="row mb-4 dashboard-cards">
+       <style>
+        .row.mb-4:hover{
+            cursor: pointer;
+           
+
+        }
+     
+       </style>
+
+    <!-- Products -->
+    <div class="col-lg-2">
+        
+        <div class="card shadow-sm border-0"> 
+            <style>
+            .card.shadow-sm.border-0:hover{
+                background: #f5ebeb;
+            }
+            </style>
+            <div class="card-body text-center">
+                <h6 class="text-muted">Products</h6>
+                <h3 class="fw-bold text-primary">{{ products_count}}</h3>
+                <style>
+                    .text-primary {
+                        color: rgb(0, 123, 255);
+                        font-size: 20px;
+                    }
+                </style>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sales Today (count) -->
+    <div class="col-md-2">
+        <div class="card shadow-sm border-0">
+            <div class="card-body text-center">
+                <h6 class="text-muted">Sales Today</h6>
+                <h3 class="fw-bold text-success">{{ sales_today }}</h3>
+                <style>
+                    .text-success {
+                        color: rgb(40, 167, 69);
+                        font-size: 20px;
+                    }
+                </style>
+            </div>
+        </div>
+    </div>
+     <!-- Monthly Sales (count) -->
+    <div class="col-md-2">
+        <div class="card shadow-sm border-0">
+            <div class="card-body text-center">
+                <h6 class="text-muted">Sales Month</h6>
+                <h3 class="fw-bold text-danger">{{ total_month_sales }}</h3>
+                <style>
+                    .text-danger {
+                        color: rgb(220, 53, 69);
+                        font-size: 20px;
+                    }
+                </style>
+            </div>
+        </div>
+    </div>
+
+        <!-- Stock Count -->
+    <div class="col-md-2">
+        <div class="card shadow-sm border-0">
+            <div class="card-body text-center">
+                <h6 class="text-muted">Stock Items</h6>
+                <h3 class="fw-bold size">{{ stock_count|intcomma }}</h3>
+                <style>
+                    .size {
+                        font-size: 20px;
+                        color: rgb(245, 201, 8);
+                    }
+                </style>
+            </div>
+        </div>
+    </div>
+
+    <!-- Total Sales Today (amount) -->
+    <div class="col-md-2">
+        <div class="card shadow-sm border-0">
+            <div class="card-body text-center">
+                <h6 class="text-muted">Today Sales</h6>
+                <h3 class="fw-bold amount">Tsh {{ total_sales_today_amount|floatformat:0|intcomma }}</h3>
+                <style>
+                    .amount {
+                        color: rgb(40, 167, 69);
+                        font-size: 20px;
+                    }
+                </style>
+            </div>
+        </div>
+    </div>
+
+   
+
+    <!-- Total Sales This Month (amount) -->
+    <div class="col-md-2">
+        <div class="card shadow-sm border-0">
+            <div class="card-body text-center">
+                <h6 class="text-muted">Month sales</h6>
+                <h3 class="fw-bold text-warning">Tsh {{ total_month_sales_amount|floatformat:0|intcomma }}</h3>
+                <style> 
+                    .text-warning {
+                        color: rgb(255, 193, 7);
+                        font-size: 15px;
+                    }
+                </style>
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+{% endblock %}
