@@ -2,7 +2,6 @@ Django==5.0.3
 gunicorn==25.1.0
 django-crispy-forms==2.1
 django-filter==24.1
-Pillow==9.5.0
 openpyxl==3.1.2
 plotly==5.19.0
 xhtml2pdf==0.2.10
